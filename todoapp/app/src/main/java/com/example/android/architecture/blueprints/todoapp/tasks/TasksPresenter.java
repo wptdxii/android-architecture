@@ -56,21 +56,6 @@ public class TasksPresenter implements TasksContract.Presenter {
         loadTasks(false);
     }
 
-    @Override
-    public void result(int requestCode, int resultCode) {
-        // If a task was successfully added, show snackbar
-        if (AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && Activity.RESULT_OK == resultCode) {
-            mTasksView.showSuccessfullySavedMessage();
-        }
-    }
-
-    @Override
-    public void loadTasks(boolean forceUpdate) {
-        // Simplification for sample: a network reload will be forced on first load.
-        loadTasks(forceUpdate || mFirstLoad, true);
-        mFirstLoad = false;
-    }
-
     /**
      * @param forceUpdate   Pass in true to refresh the data in the {@link TasksDataSource}
      * @param showLoadingUI Pass in true to display a loading icon in the UI
@@ -154,6 +139,20 @@ public class TasksPresenter implements TasksContract.Presenter {
         }
     }
 
+    private void processEmptyTasks() {
+        switch (mCurrentFiltering) {
+            case ACTIVE_TASKS:
+                mTasksView.showNoActiveTasks();
+                break;
+            case COMPLETED_TASKS:
+                mTasksView.showNoCompletedTasks();
+                break;
+            default:
+                mTasksView.showNoTasks();
+                break;
+        }
+    }
+
     private void showFilterLabel() {
         switch (mCurrentFiltering) {
             case ACTIVE_TASKS:
@@ -168,18 +167,19 @@ public class TasksPresenter implements TasksContract.Presenter {
         }
     }
 
-    private void processEmptyTasks() {
-        switch (mCurrentFiltering) {
-            case ACTIVE_TASKS:
-                mTasksView.showNoActiveTasks();
-                break;
-            case COMPLETED_TASKS:
-                mTasksView.showNoCompletedTasks();
-                break;
-            default:
-                mTasksView.showNoTasks();
-                break;
+    @Override
+    public void result(int requestCode, int resultCode) {
+        // If a task was successfully added, show snackbar
+        if (AddEditTaskActivity.REQUEST_ADD_TASK == requestCode && Activity.RESULT_OK == resultCode) {
+            mTasksView.showSuccessfullySavedMessage();
         }
+    }
+
+    @Override
+    public void loadTasks(boolean forceUpdate) {
+        // Simplification for sample: a network reload will be forced on first load.
+        loadTasks(forceUpdate || mFirstLoad, true);
+        mFirstLoad = false;
     }
 
     @Override
