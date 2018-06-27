@@ -6,6 +6,7 @@ import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepo
 import com.example.android.architecture.blueprints.todoapp.data.source.TasksRepositoryModule;
 import dagger.BindsInstance;
 import dagger.Component;
+import dagger.android.AndroidInjectionModule;
 import dagger.android.AndroidInjector;
 import dagger.android.support.AndroidSupportInjectionModule;
 import javax.inject.Singleton;
@@ -37,7 +38,7 @@ public interface AppComponent extends AndroidInjector<ToDoApplication> {
     interface Builder {
 
         @BindsInstance
-        AppComponent.Builder application(Application application);
+        AppComponen.Builder application(Application application);
 
         AppComponent build();
     }
